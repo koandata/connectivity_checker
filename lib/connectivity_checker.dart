@@ -34,10 +34,10 @@ class ConnectivityWrapper {
       'api.scrm.world.rugby/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
-    // AddressCheckOptions(
-    //   'www.google.com',
-    //   timeout: DEFAULT_TIMEOUT,
-    // ),
+    AddressCheckOptions(
+      'www.google.com',
+      timeout: DEFAULT_TIMEOUT,
+    ),
   ]);
 
   List<AddressCheckOptions> addresses = _defaultAddresses;
@@ -58,7 +58,9 @@ class ConnectivityWrapper {
     AddressCheckOptions options,
   ) async {
     try {
-      await http.get(Uri.https(options.address)).timeout(DEFAULT_TIMEOUT);
+      await http
+          .get(Uri.https(options.address, options.path))
+          .timeout(DEFAULT_TIMEOUT);
       return AddressCheckResult(options, true);
     } catch (e) {
       return AddressCheckResult(options, false);
@@ -120,15 +122,17 @@ class ConnectivityWrapper {
 
 class AddressCheckOptions {
   final String address;
+  final String path;
   final Duration timeout;
 
   AddressCheckOptions(
     this.address, {
+    this.path = '/',
     this.timeout = DEFAULT_TIMEOUT,
   });
 
   @override
-  String toString() => "AddressCheckOptions($address, $timeout)";
+  String toString() => "AddressCheckOptions($address, $path, $timeout)";
 }
 
 class AddressCheckResult {
