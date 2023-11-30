@@ -31,7 +31,8 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      'api.scrm.world.rugby/auth/terms',
+      'api.scrm.world.rugby',
+      path: '/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
     // AddressCheckOptions(
