@@ -12,7 +12,7 @@ library connectivity_wrapper;
 
 // Dart imports:
 import 'dart:async';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
 // Project imports:
 import 'package:connectivity_checker/src/utils/constants.dart';
@@ -31,13 +31,11 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      InternetAddress('google.com'),
-      port: 443,
+      'google.com',
       timeout: DEFAULT_TIMEOUT,
     ),
     AddressCheckOptions(
-      InternetAddress('api.scrm.world.rugby/auth/terms'),
-      port: 443,
+      'api.scrm.world.rugby/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
   ]);
@@ -59,17 +57,10 @@ class ConnectivityWrapper {
   Future<AddressCheckResult> isHostReachable(
     AddressCheckOptions options,
   ) async {
-    Socket? sock;
     try {
-      sock = await Socket.connect(
-        options.address,
-        options.port,
-        timeout: options.timeout,
-      );
-      sock.destroy();
+      await http.get(Uri.https(options.address)).timeout(DEFAULT_TIMEOUT);
       return AddressCheckResult(options, true);
     } catch (e) {
-      sock?.destroy();
       return AddressCheckResult(options, false);
     }
   }
@@ -128,18 +119,16 @@ class ConnectivityWrapper {
 }
 
 class AddressCheckOptions {
-  final InternetAddress address;
-  final int port;
+  final String address;
   final Duration timeout;
 
   AddressCheckOptions(
     this.address, {
-    this.port = DEFAULT_PORT,
     this.timeout = DEFAULT_TIMEOUT,
   });
 
   @override
-  String toString() => "AddressCheckOptions($address, $port, $timeout)";
+  String toString() => "AddressCheckOptions($address, $timeout)";
 }
 
 class AddressCheckResult {
