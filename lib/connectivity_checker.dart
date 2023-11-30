@@ -31,11 +31,11 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      'google.com',
+      'api.scrm.world.rugby/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
     AddressCheckOptions(
-      'api.scrm.world.rugby/auth/terms',
+      'www.google.com',
       timeout: DEFAULT_TIMEOUT,
     ),
   ]);
