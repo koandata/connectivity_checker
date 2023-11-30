@@ -4,22 +4,16 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:connectivity_checker/src/widgets/connectivity_screen_wrapper.dart';
 
-/// More info on why default port is 53
-/// here:
-/// - https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
-/// - https://www.google.com/search?q=dns+server+port
-const int DEFAULT_PORT = 53;
-
 /// Default timeout is 3 seconds.
 ///
 /// Timeout is the number of seconds before a request is dropped
 /// and an address is considered unreachable
 const Duration DEFAULT_TIMEOUT = const Duration(seconds: 3);
 
-/// Default interval is 2 seconds
+/// Default interval is 30 seconds
 ///
 /// Interval is the time between automatic checks
-const Duration DEFAULT_INTERVAL = const Duration(seconds: 2);
+const Duration DEFAULT_INTERVAL = const Duration(seconds: 30);
 
 ///default value for height
 const double defaultHeight = 40.0;
