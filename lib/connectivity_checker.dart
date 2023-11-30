@@ -58,10 +58,10 @@ class ConnectivityWrapper {
     AddressCheckOptions options,
   ) async {
     try {
-      await http
+      http.Response response = await http
           .get(Uri.https(options.address, options.path))
           .timeout(DEFAULT_TIMEOUT);
-      return AddressCheckResult(options, true);
+      return AddressCheckResult(options, response.statusCode == 200);
     } catch (e) {
       return AddressCheckResult(options, false);
     }
