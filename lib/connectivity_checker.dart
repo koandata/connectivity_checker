@@ -31,17 +31,12 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      InternetAddress('api.scrm.world.rugby'),
-      port: DEFAULT_PORT,
-      timeout: DEFAULT_TIMEOUT,
-    ),
-    AddressCheckOptions(
       InternetAddress('google.com'),
-      port: DEFAULT_PORT,
+      port: 443,
       timeout: DEFAULT_TIMEOUT,
     ),
     AddressCheckOptions(
-      InternetAddress('api.scrm.world.rugby'),
+      InternetAddress('api.scrm.world.rugby/auth/terms'),
       port: 443,
       timeout: DEFAULT_TIMEOUT,
     ),
@@ -64,14 +59,6 @@ class ConnectivityWrapper {
   Future<AddressCheckResult> isHostReachable(
     AddressCheckOptions options,
   ) async {
-    if (options.port == DEFAULT_PORT) {
-      final res = await InternetAddress.lookup(options.address.host,
-          type: InternetAddressType.IPv4);
-      return res.isNotEmpty
-          ? AddressCheckResult(options, true)
-          : AddressCheckResult(options, false);
-    }
-
     Socket? sock;
     try {
       sock = await Socket.connect(
