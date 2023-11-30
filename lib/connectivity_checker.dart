@@ -34,10 +34,10 @@ class ConnectivityWrapper {
       'api.scrm.world.rugby/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
-    AddressCheckOptions(
-      'www.google.com',
-      timeout: DEFAULT_TIMEOUT,
-    ),
+    // AddressCheckOptions(
+    //   'www.google.com',
+    //   timeout: DEFAULT_TIMEOUT,
+    // ),
   ]);
 
   List<AddressCheckOptions> addresses = _defaultAddresses;
