@@ -12,7 +12,7 @@ library connectivity_wrapper;
 
 // Dart imports:
 import 'dart:async';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
 // Project imports:
 import 'package:connectivity_checker/src/utils/constants.dart';
@@ -31,18 +31,12 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      InternetAddress('1.1.1.1'),
-      port: DEFAULT_PORT,
+      'api.scrm.world.rugby',
+      path: '/auth/terms',
       timeout: DEFAULT_TIMEOUT,
     ),
     AddressCheckOptions(
-      InternetAddress('8.8.4.4'),
-      port: DEFAULT_PORT,
-      timeout: DEFAULT_TIMEOUT,
-    ),
-    AddressCheckOptions(
-      InternetAddress('208.67.222.222'),
-      port: DEFAULT_PORT,
+      'www.google.com',
       timeout: DEFAULT_TIMEOUT,
     ),
   ]);
@@ -64,17 +58,12 @@ class ConnectivityWrapper {
   Future<AddressCheckResult> isHostReachable(
     AddressCheckOptions options,
   ) async {
-    Socket? sock;
     try {
-      sock = await Socket.connect(
-        options.address,
-        options.port,
-        timeout: options.timeout,
-      );
-      sock.destroy();
-      return AddressCheckResult(options, true);
+      http.Response response = await http
+          .get(Uri.https(options.address, options.path))
+          .timeout(DEFAULT_TIMEOUT);
+      return AddressCheckResult(options, response.statusCode == 200);
     } catch (e) {
-      sock?.destroy();
       return AddressCheckResult(options, false);
     }
   }
@@ -133,18 +122,18 @@ class ConnectivityWrapper {
 }
 
 class AddressCheckOptions {
-  final InternetAddress address;
-  final int port;
+  final String address;
+  final String path;
   final Duration timeout;
 
   AddressCheckOptions(
     this.address, {
-    this.port = DEFAULT_PORT,
+    this.path = '/',
     this.timeout = DEFAULT_TIMEOUT,
   });
 
   @override
-  String toString() => "AddressCheckOptions($address, $port, $timeout)";
+  String toString() => "AddressCheckOptions($address, $path, $timeout)";
 }
 
 class AddressCheckResult {
