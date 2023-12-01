@@ -31,13 +31,18 @@ enum ConnectivityStatus { CONNECTED, DISCONNECTED }
 class ConnectivityWrapper {
   static final List<AddressCheckOptions> _defaultAddresses = List.unmodifiable([
     AddressCheckOptions(
-      InternetAddress('google.com'),
-      port: 443,
+      InternetAddress('1.1.1.1'),
+      port: DEFAULT_PORT,
       timeout: DEFAULT_TIMEOUT,
     ),
     AddressCheckOptions(
-      InternetAddress('api.scrm.world.rugby/auth/terms'),
-      port: 443,
+      InternetAddress('8.8.4.4'),
+      port: DEFAULT_PORT,
+      timeout: DEFAULT_TIMEOUT,
+    ),
+    AddressCheckOptions(
+      InternetAddress('208.67.222.222'),
+      port: DEFAULT_PORT,
       timeout: DEFAULT_TIMEOUT,
     ),
   ]);
